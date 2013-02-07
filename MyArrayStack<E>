@@ -1,0 +1,63 @@
+package com.collection;
+
+import java.util.Iterator;
+
+public class MyArrayStack<E> implements Iterable<E>{
+
+  private int topOfStack;
+	private E[] items;
+	private static final int DEFAULT_SIZE = 10;
+	
+	public MyArrayStack(){
+		clear();
+	}
+	
+	public void clear(){
+		topOfStack = -1;
+		ensureCapacity(DEFAULT_SIZE);
+	}
+	
+	public int size(){
+		
+		return topOfStack+1;
+	}
+	
+	private void ensureCapacity(int capacity){
+		if(capacity < size()){
+			return ;
+		}
+		E[] old = items;
+		items = (E[]) new Object[capacity];
+		for(int i=0; i< size(); i++){
+			items[i] = old[i];
+		}
+	}
+	
+	public void push(E e){
+		if(items.length == size()){
+			ensureCapacity(size()*2+1);
+		}
+		topOfStack++;
+		items[topOfStack] = e;
+	}
+	
+	public E pop(){
+		if(topOfStack == -1){
+			throw new ArrayIndexOutOfBoundsException();
+		}
+		E o = items[topOfStack];
+		topOfStack--;
+		return o;
+	}
+	
+	public boolean isEmpty(){
+		
+		return topOfStack == -1;
+	}
+	
+	@Override
+	public Iterator<E> iterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+}
