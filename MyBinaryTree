@@ -1,0 +1,111 @@
+package com.collection;
+
+public class MyBinaryTree<T extends Comparable<? super T>> {
+  
+	private BinaryNode<T> root;
+	
+	public MyBinaryTree(){
+		root = null;
+	}
+	
+	public boolean contains(T t){
+		return contains(t, root);
+	}
+	
+	private boolean contains(T t, BinaryNode<T> node){
+		if(node == null)
+			return false;
+		int compareResult = t.compareTo(node.t);
+		if(compareResult > 0)
+			return contains(t, node.right);
+		else if(compareResult < 0)
+			return contains(t, node.left);
+		else
+			return true;
+	}
+	
+	public void insert(T t){
+		root = insert(t, root);
+	}
+	
+	private BinaryNode<T> insert(T t, BinaryNode<T> node){
+		if(node == null){
+			return new BinaryNode<T>(t, null, null);
+		}
+		int compareResult = t.compareTo(node.t);
+		if(compareResult > 0)
+			node.right = insert(t, node.right);
+		else if(compareResult < 0)
+			node.left = insert(t, node.left);
+		else
+			;
+		return node;
+	}
+	
+	public boolean isEmpty(){
+		return root == null;
+	}
+	public T findMin(){
+		if(isEmpty())
+			throw new NullPointerException("");
+		return findMin(root).t;
+	}
+	
+	private BinaryNode<T> findMin(BinaryNode<T> n){
+		if(n.left != null)
+			return findMin(n.left);
+		else
+			return n;
+	}
+	
+	public T findMax(){
+		if(isEmpty())
+			throw new NullPointerException("");
+		return findMax(root).t;
+	}
+	
+	private BinaryNode<T> findMax(BinaryNode<T> n){
+		if(n.right != null)
+			return findMax(n.right);
+		else
+			return n;
+	}
+	
+	public void remove(T t){
+		root = remove(t, root);
+	}
+	
+	private BinaryNode<T> remove(T t, BinaryNode<T> node){
+		if(node == null){
+			return node;
+		}
+		int compareResult = t.compareTo(node.t);
+		if(compareResult > 0){
+			node.right = remove(t, node.right);
+		}else if(compareResult < 0){
+			node.left = remove(t, node.left);
+		}else if(node.left != null && node.right != null){
+			node.t = findMin(node.right).t;
+			node.right = remove(node.t, node.right);
+		}else{
+			node = node.left==null?node.right:node.left;
+		}
+		return node;
+	}
+	
+	public static class BinaryNode<T> {
+		T t;
+		BinaryNode<T> left;
+		BinaryNode<T> right;
+		
+		public BinaryNode(T t){
+			this(t, null, null);
+		}
+
+		public BinaryNode(T t, BinaryNode<T> l, BinaryNode<T> r){
+			this.t = t;
+			this.left = l;
+			this.right = r;
+		}
+	}
+}
